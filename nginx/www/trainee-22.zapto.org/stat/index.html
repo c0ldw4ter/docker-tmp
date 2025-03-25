@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Статистика сервера</title>
+		<style>
+			body {
+				font-family: sans-serif;
+				margin: 30px;
+			}
+			.stat-block {
+				margin-bottom: 1em;
+			}
+			#error {
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Статистика сервера</h1>
+
+		<div class="stat-block">
+			<strong>CPU загрузка:</strong> <span id="cpu-val">Загрузка...</span>
+		</div>
+		<div class="stat-block">
+			<strong>Частота CPU:</strong> <span id="freq-val">Загрузка...</span>
+		</div>
+		<div class="stat-block">
+			<strong>Load Average:</strong> <span id="load-val">Загрузка...</span>
+		</div>
+		<div class="stat-block">
+			<strong>Использование памяти:</strong>
+			<span id="mem-val">Загрузка...</span>
+		</div>
+
+		<div id="error"></div>
+
+		<script>
+			async function fetchData(url) {
+				const resp = await fetch(url)
+				return resp.json()
+			}
+
+			async function updateStats() {
+				try {
+					// CPU
+					const cpuData = await fetchData('/cpu')
+					document.getElementById('cpu-val').textContent = cpuData.cpu + '%'
+
+					// Частота
+					const freqData = await fetchData('/frequency')
+					document.getElementById('freq-val').textContent = freqData.freq
+
+					// Load Avg
+					const loadData = await fetchData('/loadavg')
+					document.getElementById('load-val').textContent =
+						loadData.load_average
+
+					// Память
+					const memData = await fetchData('/memory')
+					document.getElementById('mem-val').textContent = memData.RAM_Used
+				} catch (error) {
+					console.error(error)
+					document.getElementById('error').textContent =
+						'Ошибка при получении данных: ' + error
+				}
+			}
+
+			// Обновляем показатели каждые 1 сек
+			setInterval(updateStats, 1000)
+			updateStats()
+		</script>
+	</body>
+</html>
