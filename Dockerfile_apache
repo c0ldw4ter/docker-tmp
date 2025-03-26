@@ -5,4 +5,4 @@ COPY nginx/www/trainee-22.zapto.org/apache/info.php /var/www/html/info.php
 
 
 EXPOSE 80
-CMD ["httpd", "-D", "FOREGROUND"]
+CMD ["apache2-foreground"]

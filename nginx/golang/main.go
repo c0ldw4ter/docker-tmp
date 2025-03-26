@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 
@@ -51,13 +50,12 @@ func memUsage(w http.ResponseWriter, r *http.Request){
 
 
 func main() {
-    var port string
-    flag.StringVar(&port, "port", "8080", "Port to listen on")
-    flag.Parse()
+
+  
     //Ручики для Golang
     http.HandleFunc("/frequency", cpuFreq) 
     http.HandleFunc("/loadavg", loadAvgHandler)
     http.HandleFunc("/memory", memUsage)
     http.HandleFunc("/cpu", cpuHandler)
-    http.ListenAndServe(":"+port, nil)
+    http.ListenAndServe(":8080", nil)
 }
