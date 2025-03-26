@@ -12,4 +12,4 @@ RUN go build -a -installsuffix cgo -o serv_stat main.go
 FROM alpine:3.20
 COPY --from=build /src/serv_stat .
 EXPOSE 8080
-CMD ["sh", "-c", "./serv_stat -port=8080"]
+CMD ["./serv_stat"]
