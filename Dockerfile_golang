@@ -9,6 +9,6 @@ RUN go build -a -installsuffix cgo -o stat main.go
 
 #СТАГЕ 2
 FROM alpine:3.20
-COPY --from=build /src/serv_stat .
+COPY --from=build /src/stat .
 EXPOSE 8080
 CMD ["./stat"]
