@@ -1,14 +1,13 @@
-
 #СТАГЕ 1
 FROM golang:1.23 AS build
 WORKDIR /src
 RUN go mod init nginx-stat
 COPY nginx/golang/main.go .
 RUN go mod tidy
-
+ENV CGO_ENABLED=0
+RUN go build -a -installsuffix cgo -o serv_stat main.go
 
 #СТАГЕ 2
-RUN go build -a -installsuffix cgo -o serv_stat main.go
 FROM alpine:3.20
 COPY --from=build /src/serv_stat .
 EXPOSE 8080
